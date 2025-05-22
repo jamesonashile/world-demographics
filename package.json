@@ -3,8 +3,13 @@
   "version": "0.1.0",
   "description": "macro demographics map",
   "author": "James Onashile",
-  "license":"MIT",
-  "keywords": ["nextjs", "macro", "demographics", "supabase"],
+  "license": "MIT",
+  "keywords": [
+    "nextjs",
+    "macro",
+    "demographics",
+    "supabase"
+  ],
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -16,7 +21,8 @@
   "dependencies": {
     "next": "15.3.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-simple-maps": "^3.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -24,6 +30,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@types/geojson": "^7946.0.16",
     "@types/node": "^20",
     "@types/react": "^19.1.5",
     "@types/react-dom": "^19",
