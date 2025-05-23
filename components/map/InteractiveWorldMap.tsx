@@ -21,7 +21,7 @@ export default function InteractiveWorldMap() {
 
     
   return (
-    <div className="w-full max-w-full h-auto border-2 border-red-500">
+    <div className="w-full max-w-full h-auto">
       <div className="absolut z-10 top-2 left-2 flex gap-2">
         <button className="bg-white px-3 py-1 rounded shadow">+</button>
         <button className="bg-white px-3 py-1 rounded shadow">-</button>
