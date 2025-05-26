@@ -67,6 +67,7 @@ export default function InteractiveWorldMap({ onCountryClick, center }: Props) {
                     }}
                     onClick={() => {
                       const centroid = geoCentroid(geo);
+                      console.log("clicked country code:", code)
                       if (centroid && centroid.length === 2) {
                         onCountryClick?.(code, centroid as [number, number]);
                       }

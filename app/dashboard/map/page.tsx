@@ -3,20 +3,48 @@
 import { useState } from "react";
 
 import InteractiveWorldMap from "../../../components/map/InteractiveWorldMap";
+import CountryPanelModal from "@/components/CountryPanelModal";
+import { useCountryStore } from "@/store/useCountryStore";
+import { countries } from "@/lib/countries-data";
 
 
-  
-export default function MapPage(){
 
-    const [center, setCenter] = useState<[number, number] | undefined>(undefined)
+export default function MapPage() {
+  const [center, setCenter] = useState<[number, number] | undefined>(undefined);
+  const {activeCountry, setActiveCountry} = useCountryStore();
+
+  const handleCountryClick = (code: string, centroid: [number, number])=>{
     
-    return(
-        <main className="p-4">
-            <h1 className="text-xl font-bold mb-4">World Map</h1>
-            <InteractiveWorldMap
-            onCountryClick={(_, centroid) => setCenter(centroid)}
-            center={center}
-            />
-        </main>
-    )
+    const country = countries.find((c)=>c.code === code);
+    if(country){
+        setActiveCountry(country);
+        setCenter(centroid)
+    }
+  }
+
+ 
+  return (
+    <main className="p-4">
+      <h1 className="text-xl font-bold mb-4">World Map</h1>
+      <InteractiveWorldMap
+        onCountryClick={handleCountryClick}
+        center={center ?? undefined}
+      />
+      
+      {activeCountry && (
+        
+        <CountryPanelModal
+          open={!!activeCountry}
+          onOpenChange={(open) => {
+            if (!open) setActiveCountry(null);
+          }}
+          name={activeCountry.name}
+          code={activeCountry.code}
+          phase={activeCountry.dividendPhase}
+          shape={activeCountry.demographicShape}
+          policyScore={activeCountry.policyScore}
+        /> 
+      )}
+    </main>
+  );
 }
