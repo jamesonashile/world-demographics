@@ -2,14 +2,13 @@
 
 {
   "compilerOptions": {
-
     "baseUrl": ".",
-    "types":["vitest"],
+    "types": ["vitest"],
     "paths": {
       "@/*": ["./*"]
     },
     "target": "ES2021",
-    "lib": ["DOM", "DOM.Iterable", "ES2021"],
+    "lib": ["DOM", "DOM.Iterable", "ES2021", "ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
