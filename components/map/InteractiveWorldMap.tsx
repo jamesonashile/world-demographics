@@ -3,7 +3,7 @@
 import React from "react";
 
 import { phaseColours } from "@/lib/phaseColours";
-import { countries } from "@/lib/countries-data";
+import { useCountries } from "@/hooks/useCountries";
 
 import {
   ComposableMap,
@@ -19,11 +19,18 @@ import type { Feature } from "geojson";
 const geoUrl = "/geo/countries.geojson";
 
 type Props = {
+ 
   onCountryClick?: (countryCode: string, centroid: [number, number]) => void;
   center?: [number, number];
 };
 
 export default function InteractiveWorldMap({ onCountryClick, center }: Props) {
+
+const {data: countries} = useCountries();
+  if (!countries) return null;
+
+
+
   return (
     <div className="w-full max-w-full h-auto">
       <div className="absolut z-10 top-2 left-2 flex gap-2">
@@ -40,7 +47,10 @@ export default function InteractiveWorldMap({ onCountryClick, center }: Props) {
             {({ geographies }: { geographies: Feature[] }) =>
               geographies.map((geo: Feature) => {
                 const code = geo.properties?.["ISO3166-1-Alpha-2"];
+                //console.log("Checking match for geo code:", code, "against countries:", countries.map(c => c.code));
+
                 const match = countries.find((c) => c.code === code);
+                //console.log("MATCHING", code, match)
                 const phase = match?.dividendPhase;
                 const fill = phase
                   ? phaseColours[phase] ?? "#e5e7eb"

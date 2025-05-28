@@ -5,13 +5,19 @@ import { useState } from "react";
 import InteractiveWorldMap from "../../../components/map/InteractiveWorldMap";
 import CountryPanelModal from "@/components/CountryPanelModal";
 import { useCountryStore } from "@/store/useCountryStore";
-import { countries } from "@/lib/countries-data";
+import { useCountries } from "@/hooks/useCountries";
+
+
 
 
 
 export default function MapPage() {
   const [center, setCenter] = useState<[number, number] | undefined>(undefined);
   const {activeCountry, setActiveCountry} = useCountryStore();
+
+  const {data: countries} = useCountries();
+
+  if (!countries) return null;
 
   const handleCountryClick = (code: string, centroid: [number, number])=>{
     

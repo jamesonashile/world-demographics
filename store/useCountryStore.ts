@@ -1,12 +1,6 @@
 import {create} from "zustand";
 
-type Country = {
-    name: string;
-    code: string;
-    dividendPhase: string;
-    demographicShape: string;
-    policyScore: number
-}
+import type { Country } from "@/types/Country";
 
 type CountryStore ={
     activeCountry: Country | null;
