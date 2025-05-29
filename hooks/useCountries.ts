@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/subabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 
 import type { Country } from "@/types/Country";
 
