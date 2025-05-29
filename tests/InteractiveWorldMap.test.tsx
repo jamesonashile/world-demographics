@@ -8,13 +8,30 @@ import { describe, it, expect } from "vitest";
 
 import InteractiveWorldMap from "@/components/map/InteractiveWorldMap";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import type { Feature } from "geojson";
 
-vi.mock("@/lib/countries-data", () => ({
-  countries: [
-    { name: "India", code: "IN", dividendPhase: "Pre-Dividend" },
-    { name: "Japan", code: "JP", dividendPhase: "Post-Dividend" },
-  ],
+const queryClient = new QueryClient();
+
+function renderWithClient(ui: React.ReactElement){
+  return render(
+    <QueryClientProvider client={queryClient}>
+      {ui}
+    </QueryClientProvider>
+  )
+}
+
+vi.mock("@/hooks/useCountries", () => ({
+  useCountries:()=>({
+    data: [
+      { name: "India", code: "IN", dividendPhase: "Pre-Dividend" },
+      { name: "Japan", code: "JP", dividendPhase: "Post-Dividend" },
+    ],
+    isLoading:false,
+    error:null,
+
+  }),
 }));
 
 vi.mock(
@@ -57,14 +74,14 @@ vi.mock(
 
 describe("InteractiveWorldMap", () => {
   it("renders without crashing", () => {
-    render(<InteractiveWorldMap />);
+    renderWithClient(<InteractiveWorldMap />);
     const paths = document.querySelectorAll(".rsm-geography");
     expect(paths.length).toBeGreaterThan(0);
   });
 
   it("calls onCountryClick with correct code and centroid", ()=>{
     const mockClick = vi.fn();
-    render(<InteractiveWorldMap onCountryClick={mockClick}/>);
+    renderWithClient(<InteractiveWorldMap onCountryClick={mockClick}/>);
 
     const paths = document.querySelectorAll(".rsm-geography");
     expect(paths.length).toBeGreaterThan(0)
