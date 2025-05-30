@@ -1,9 +1,7 @@
-
-
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "types": ["vitest"],
+    "types": ["vitest", "node"],
     "paths": {
       "@/*": ["./*"]
     },
@@ -17,7 +15,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "strictNullChecks": true,
@@ -43,7 +41,5 @@
     "next-env.d.ts",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
