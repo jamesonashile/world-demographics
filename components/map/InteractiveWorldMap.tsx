@@ -21,17 +21,33 @@ const geoUrl = "/geo/countries.geojson";
 
 type Props = {
   onCountryClick: (countryCode: string, centroid: [number, number]) => void;
-  center?: [number, number];
 };
 
-export default function InteractiveWorldMap({ onCountryClick, center }: Props) {
-  const [zoom, setZoom] = useState(1);
+export default function InteractiveWorldMap({ onCountryClick }: Props) {
+  const [zoom, setZoom] = useState(1.2);
+  const [center, setCenter] = useState<[number, number]>([0, 0])
   
   const { data: countries } = useCountries();
   if (!countries) return null;
 
   const handleZoomIn = () => setZoom((z) => Math.min(z * 1.5, 8));
-  const handleZoomOut = () => setZoom((z) => Math.max(z / 1.5, 1));
+  const handleZoomOut = () => setZoom((z) => Math.max(z / 1.5, 1.2));
+
+  const clamp = (value: number, min: number, max: number)=> Math.max(min, Math.min(max, value));
+
+  const handleMoveEnd = ({coordinates, zoom}: {coordinates: [number, number]; zoom: number}) => {
+    
+    const [lng, lat ] = coordinates;
+
+    const maxLat = zoom * 20;
+    const maxLng = zoom * 45;
+
+    const clampedLat = clamp(lat, -maxLat, maxLat);
+    const clampedLng = clamp(lng, -maxLng, maxLng);
+
+    setCenter([clampedLng, clampedLat]);
+    setZoom(zoom);
+  }
 
   return (
     <div className="relative w-full max-w-full h-auto">
@@ -56,8 +72,8 @@ export default function InteractiveWorldMap({ onCountryClick, center }: Props) {
       >
         <ZoomableGroup
           zoom={zoom}
-          onMoveEnd={({ zoom }: { zoom: number }) => setZoom(zoom)}
-          center={center ?? [10, -10]}
+          onMoveEnd={handleMoveEnd}
+          center={center}
         >
           <Geographies geography={geoUrl}>
             {({ geographies }: { geographies: Feature[] }) =>
