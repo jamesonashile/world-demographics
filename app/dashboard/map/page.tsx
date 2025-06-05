@@ -36,7 +36,7 @@ export default function MapPage() {
       <h1 className="text-xl font-bold mb-4">World Map</h1>
       <InteractiveWorldMap
         onCountryClick={handleCountryClick}
-        center={center ?? undefined}
+        center={center}
       />
       
       {activeCountry && (

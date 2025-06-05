@@ -1,12 +1,22 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "types": ["vitest", "node"],
+    "types": [
+      "vitest",
+      "node"
+    ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     },
     "target": "ES2021",
-    "lib": ["DOM", "DOM.Iterable", "ES2021", "ESNext"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2021",
+      "ESNext"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -15,7 +25,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "strictNullChecks": true,
@@ -41,5 +51,7 @@
     "next-env.d.ts",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
