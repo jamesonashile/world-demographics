@@ -32,7 +32,7 @@ export default function MapPage() {
 
  
   return (
-    <main className="p-4">
+    <main className="p-1">
       
       <InteractiveWorldMap
         onCountryClick={handleCountryClick}

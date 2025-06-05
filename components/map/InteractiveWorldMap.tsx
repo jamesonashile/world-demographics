@@ -57,7 +57,7 @@ export default function InteractiveWorldMap({ onCountryClick, center }: Props) {
         <ZoomableGroup
           zoom={zoom}
           onMoveEnd={({ zoom }: { zoom: number }) => setZoom(zoom)}
-          center={center ?? [0, 0]}
+          center={center ?? [10, -10]}
         >
           <Geographies geography={geoUrl}>
             {({ geographies }: { geographies: Feature[] }) =>
