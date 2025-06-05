@@ -19,12 +19,17 @@ export default function MapPage() {
 
   if (!countries) return null;
 
-  const handleCountryClick = (code: string)=>{
-    
+  const handleMouseEnter = (code: string)=>{
+    setActiveCountry(null)
     const country = countries.find((c)=>c.code === code);
     if(country){
         setActiveCountry(country);
-    }
+    } 
+  }
+
+  const handleMouseLeave = () =>{
+    setActiveCountry(null)
+    
   }
 
  
@@ -32,16 +37,14 @@ export default function MapPage() {
     <main className="p-1">
       
       <InteractiveWorldMap
-        onCountryClick={handleCountryClick}
+        onCountryEnter={handleMouseEnter}
+        onCountryLeave={handleMouseLeave}
       />
       
       {activeCountry && (
         
         <CountryPanelModal
           open={!!activeCountry}
-          onOpenChange={(open) => {
-            if (!open) setActiveCountry(null);
-          }}
           name={activeCountry.name}
           code={activeCountry.code}
           phase={activeCountry.dividendPhase}
