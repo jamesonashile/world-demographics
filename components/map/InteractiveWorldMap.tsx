@@ -114,7 +114,7 @@ export default function InteractiveWorldMap({
                       },
                     }}
                     onMouseEnter={() => {
-                      console.log("bitch")
+                      
                       const centroid = geoCentroid(geo);
 
                       if (centroid && centroid.length === 2) {
