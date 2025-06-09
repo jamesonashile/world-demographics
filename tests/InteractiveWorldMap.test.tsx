@@ -74,19 +74,23 @@ vi.mock(
 
 describe("InteractiveWorldMap", () => {
   it("renders without crashing", () => {
-    renderWithClient(<InteractiveWorldMap />);
+    const mockMouseEnter = vi.fn();
+    const mockMouseLeave = vi.fn();
+    renderWithClient(<InteractiveWorldMap onCountryEnter={mockMouseEnter} onCountryLeave={mockMouseLeave}/>);
+    
     const paths = document.querySelectorAll(".rsm-geography");
     expect(paths.length).toBeGreaterThan(0);
   });
 
-  it("calls onCountryClick with correct code and centroid", ()=>{
-    const mockClick = vi.fn();
-    renderWithClient(<InteractiveWorldMap onCountryClick={mockClick}/>);
+  it("calls onCountryEnter with correct code and centroid", ()=>{
+    const mockMouseEnter = vi.fn();
+    const mockMouseLeave = vi.fn();
+    renderWithClient(<InteractiveWorldMap onCountryEnter={mockMouseEnter} onCountryLeave={mockMouseLeave}/>);
 
     const paths = document.querySelectorAll(".rsm-geography");
     expect(paths.length).toBeGreaterThan(0)
 
-    fireEvent.click(paths[0])
-    expect(mockClick).toHaveBeenCalledWith("JP", expect.any(Array))
+    fireEvent.mouseEnter(paths[0])
+    expect(mockMouseEnter).toHaveBeenCalledWith("JP", expect.any(Array))
   })
 });

@@ -1,13 +1,21 @@
-import {ReactElement} from "react";
+import React, {ReactElement} from "react";
 
 import { describe, it, expect, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-//import { useCountryStore } from "@/store/useCountryStore";
-
-
 
 import MapPage from "@/app/dashboard/map/page";
+
+
+const queryClient = new QueryClient();
+
+function renderWithClient(ui: React.ReactElement){
+  return render(
+    <QueryClientProvider client={queryClient}>
+      {ui}
+    </QueryClientProvider>
+  )
+}
 
 vi.mock("@/hooks/useCountries", () => ({
   useCountries: () => ({
@@ -53,30 +61,30 @@ vi.mock("react-simple-maps", async () => {
       }),
     Geography: ({
       geography,
-      onClick,
+      onMouseEnter,
+      onMouseLeave
     }: {
       geography: {properties: Record<string, string>};
-      onClick: () => void;
+      onMouseEnter: () => void;
+      onMouseLeave: () => void;
     }) => (
       <path
         data-testid={`country-${geography.properties["ISO3166-1-Alpha-2"]}`}
-        onClick={onClick}
+        onMouseEnter={onMouseEnter} 
+        onMouseLeave={onMouseLeave}
       />
     ),
   };
 });
 
 describe("MapPage integration", () => {
-  it("clicking country triggers modal with correct data", async () => {
-    const queryClient = new QueryClient();
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MapPage />
-      </QueryClientProvider>
-    );
+  it("makes sure mouse entering country triggers modal with correct data", async () => {
+    
+    renderWithClient(<MapPage/>)
 
     const india = await screen.findByTestId("country-IN");
-    fireEvent.click(india);
+
+    fireEvent.mouseEnter(india);
 
     await waitFor(() => {
       expect(
@@ -89,7 +97,6 @@ describe("MapPage integration", () => {
       expect(screen.getByText(/Policy Score: 4.2/i)).toBeInTheDocument();
     });
 
-    /* const state = useCountryStore.getState();
-        expect(state.activeCountry?.code.toBe("IN"))*/
+
   });
 });
