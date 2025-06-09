@@ -24,29 +24,31 @@ type Props = {
   onCountryLeave: () => void;
 };
 
+type CoordinateZoom = {
+  coordinates: [number, number];
+    zoom: number;
+}
+
 export default function InteractiveWorldMap({
   onCountryEnter,
   onCountryLeave,
 }: Props) {
-  const [zoom, setZoom] = useState(1.2);
+  const [zoom, setZoom] = useState<number>(1.2);
   const [center, setCenter] = useState<[number, number]>([0, 0]);
 
   const { data: countries } = useCountries();
+
   if (!countries) return null;
 
-  const handleZoomIn = () => setZoom((z) => Math.min(z * 1.5, 8));
-  const handleZoomOut = () => setZoom((z) => Math.max(z / 1.5, 1.2));
+  function handleZoomIn(){return setZoom((z) => Math.min(z * 1.5, 8))};
+  function handleZoomOut(){return setZoom((z) => Math.max(z / 1.5, 1.2))};
 
-  const clamp = (value: number, min: number, max: number) =>
-    Math.max(min, Math.min(max, value));
+  function clamp(value: number, min: number, max: number){return Math.max(min, Math.min(max, value))};
 
-  const handleMoveEnd = ({
+  function handleMoveEnd({
     coordinates,
     zoom,
-  }: {
-    coordinates: [number, number];
-    zoom: number;
-  }) => {
+  }: CoordinateZoom){
     const [lng, lat] = coordinates;
 
     const maxLat = zoom * 20;
