@@ -4,7 +4,7 @@ import { describe, it, expect, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-import MapPage from "@/app/dashboard/map/page";
+import Home from "@/app/page";
 
 
 const queryClient = new QueryClient();
@@ -80,7 +80,7 @@ vi.mock("react-simple-maps", async () => {
 describe("MapPage integration", () => {
   it("makes sure mouse entering country triggers modal with correct data", async () => {
     
-    renderWithClient(<MapPage/>)
+    renderWithClient(<Home/>)
 
     const india = await screen.findByTestId("country-IN");
 
