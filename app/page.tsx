@@ -3,7 +3,7 @@
 import React from "react";
 
 import InteractiveWorldMap from "@/components/map/InteractiveWorldMap";
-import CountryPanelModal from "@/components/CountryPanelModal";
+import CountryPanelModal from "@/components/map/CountryPanelModal";
 import { useCountryStore } from "@/store/useCountryStore";
 import { useCountries } from "@/hooks/useCountries";
 
