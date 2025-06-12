@@ -1,25 +1,126 @@
 "use client";
 
+import { useReducer } from "react";
 import CountryTableRow from "./CountryTableRow";
 import { useCountries } from "@/hooks/useCountries";
 
+type Columns = {
+  column: string;
+  scend: string;
+};
+
+type Dispatch = {
+  type: string;
+};
+
+type Demographics = {
+  name: string;
+  code: string;
+  dividendPhase: string;
+  demographicShape: string;
+  policyScore: number;
+};
+
+const initialState = { column: "name", scend: "Ascend" };
+
+function reducer(state: Columns, action: Dispatch) {
+  switch (action.type) {
+    case "country ascend":
+      return { column: "name", scend: "Ascend" };
+    case "country descend":
+      return { column: "name", scend: "Descend" };
+    case "code ascend":
+      return { column: "code", scend: "Ascend" };
+    case "code descend":
+      return { column: "code", scend: "Descend" };
+    case "phase ascend":
+      return { column: "dividendPhase", scend: "Ascend" };
+    case "phase descend":
+      return { column: "dividendPhase", scend: "Descend" };
+    case "shape ascend":
+      return { column: "demographicShape", scend: "Ascend" };
+    case "shape descend":
+      return { column: "demographicShape", scend: "Descend" };
+    case "policy ascend":
+      return { column: "policyScore", scend: "Ascend" };
+    case "policy descend":
+      return { column: "policyScore", scend: "Descend" };
+    default:
+      throw new Error(`Unknown action: ${state} ${action.type}`);
+  }
+}
+
 export default function CountryTable() {
-  const { data: countries } = useCountries();
+  const { data } = useCountries();
+  const countries = data as Demographics[] | undefined;
+
+  const [columnSort, dispatch] = useReducer(reducer, initialState);
 
   if (!countries) return null;
 
+  //Table starts organised by name
+  if (columnSort.column === "name" && columnSort.scend === "Ascend") {
+    countries.sort((a, b) =>
+      a.name.localeCompare(b.name, undefined, {
+        sensitivity: "base",
+      })
+    );
+  }
 
+  function handleColumnSort(column: keyof Demographics, key: string) {
+    if (!countries) return;
+    if (columnSort.column === column && columnSort.scend === "Ascend") {
+      dispatch({ type: `${key} descend` });
+      countries.sort((a, b) =>
+        b[column].toString().localeCompare(a[column].toString(), undefined, {
+          sensitivity: "base",
+        })
+      );
+    } else {
+      dispatch({ type: `${key} ascend` });
+      countries.sort((a, b) =>
+        a[column].toString().localeCompare(b[column].toString(), undefined, {
+          sensitivity: "base",
+        })
+      );
+    }
+  }
 
   return (
     <div className="overflow-auto max-h-[95vh] rounded border border-gray-200 shadow-sm mt-[5vh]">
       <table className="min-w-full divide-y-1 divide-gray-100">
         <thead className="ltf:text-left rtl:text-right sticky top-0 bg-white z-10">
-          <tr className=" *:font-medium *:text-gray-900 ">
-            <th className="px-3 py-2 whitespace-nowrap text-left">Country</th>
-            <th className="px-3 py-2 whitespace-nowrap text-left">Code</th>
-            <th className="px-3 py-2 whitespace-nowrap text-left">Phase</th>
-            <th className="px-3 py-2 whitespace-nowrap text-left">Shape</th>
-            <th className="px-3 py-2 whitespace-nowrap text-left">Policy Score</th>
+          <tr className=" *:font-semibold *:text-gray-900 ">
+            <th
+              className="px-3 py-2 whitespace-nowrap text-left hover:bg-blue-200"
+              onClick={() => handleColumnSort("name", "country")}
+            >
+              Country
+            </th>
+            <th
+              className="px-3 py-2 whitespace-nowrap text-left hover:bg-blue-200"
+              onClick={() => handleColumnSort("code", "code")}
+            >
+              Code
+            </th>
+            <th
+              className="px-3 py-2 whitespace-nowrap text-left hover:bg-blue-200"
+              onClick={() => handleColumnSort("dividendPhase", "phase")}
+            >
+              Phase
+            </th>
+            <th
+              className="px-3 py-2 whitespace-nowrap text-left hover:bg-blue-200"
+              onClick={() => handleColumnSort("demographicShape", "shape")}
+            >
+              Shape
+            </th>
+            <th
+              className="px-3 py-2 whitespace-nowrap text-left hover:bg-blue-200"
+              onClick={() => handleColumnSort("policyScore", "policy")}
+            >
+              Policy Score
+            </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 *:odd:bg-gray-200 ">
@@ -39,4 +140,4 @@ export default function CountryTable() {
   );
 }
 
-//need to map rows from supabase
+

@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 
 import type { Country } from "@/types/Country";
 
+
 export function useCountries(){
     
     return useQuery<Country[]>({
