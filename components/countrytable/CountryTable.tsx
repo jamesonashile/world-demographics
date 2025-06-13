@@ -4,13 +4,15 @@ import { useReducer, useMemo } from "react";
 import CountryTableRow from "./CountryTableRow";
 import { useCountries } from "@/hooks/useCountries";
 
-type Columns = {
+type Initial = {
   column: string;
-  scend: string;
+  scend: "Ascend" | "Descend";
 };
 
+type SortAction = "country ascend" | "country descend" | "code ascend" | "code descend" | "phase ascend" | "phase descend" | "shape ascend" | "shape descend" | "policy ascend" | "policy descend";
+
 type Dispatch = {
-  type: string;
+  type: SortAction;
 };
 
 type Demographics = {
@@ -23,7 +25,7 @@ type Demographics = {
 
 const initialState = { column: "name", scend: "Ascend" };
 
-function reducer(state: Columns, action: Dispatch) {
+function reducer(state: Initial, action: Dispatch) {
   switch (action.type) {
     case "country ascend":
       return { column: "name", scend: "Ascend" };
