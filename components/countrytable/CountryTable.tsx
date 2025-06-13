@@ -4,12 +4,26 @@ import { useReducer, useMemo } from "react";
 import CountryTableRow from "./CountryTableRow";
 import { useCountries } from "@/hooks/useCountries";
 
+type SortKey = "country" | "code" | "phase" | "shape" | "policy";
+
+type SortDirection = "Ascend" | "Descend";
+
 type Initial = {
   column: string;
-  scend: "Ascend" | "Descend";
+  scend: SortDirection;
 };
 
-type SortAction = "country ascend" | "country descend" | "code ascend" | "code descend" | "phase ascend" | "phase descend" | "shape ascend" | "shape descend" | "policy ascend" | "policy descend";
+type SortAction =
+  | "country ascend"
+  | "country descend"
+  | "code ascend"
+  | "code descend"
+  | "phase ascend"
+  | "phase descend"
+  | "shape ascend"
+  | "shape descend"
+  | "policy ascend"
+  | "policy descend";
 
 type Dispatch = {
   type: SortAction;
@@ -23,9 +37,9 @@ type Demographics = {
   policyScore: number;
 };
 
-const initialState = { column: "name", scend: "Ascend" };
+const initialState: Initial = { column: "name", scend: "Ascend" };
 
-function reducer(state: Initial, action: Dispatch) {
+function reducer(state: Initial, action: Dispatch): Initial {
   switch (action.type) {
     case "country ascend":
       return { column: "name", scend: "Ascend" };
@@ -81,11 +95,9 @@ export default function CountryTable() {
   
   
 
-  function handleColumnSort(column: keyof Demographics, key: string) {
-    
+  function handleColumnSort(column: keyof Demographics, key: SortKey) {
     if (columnSort.column === column && columnSort.scend === "Ascend") {
       dispatch({ type: `${key} descend` });
-    
     } else {
       dispatch({ type: `${key} ascend` });
     }
