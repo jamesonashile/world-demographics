@@ -52,11 +52,13 @@ function reducer(state: Columns, action: Dispatch) {
 
 export default function CountryTable() {
   const { data } = useCountries();
-  const countries = data as Demographics[] | undefined;
+  const countriesRaw = data as Demographics[] | undefined;
 
   const [columnSort, dispatch] = useReducer(reducer, initialState);
 
-  if (!countries) return null;
+  if (!countriesRaw) return null;
+
+  const countries = [...countriesRaw]
 
   //Table starts organised by name
   if (columnSort.column === "name" && columnSort.scend === "Ascend") {
