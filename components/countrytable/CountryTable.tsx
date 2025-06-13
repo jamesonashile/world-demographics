@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer } from "react";
+import { useReducer, useMemo } from "react";
 import CountryTableRow from "./CountryTableRow";
 import { useCountries } from "@/hooks/useCountries";
 
@@ -50,41 +50,42 @@ function reducer(state: Columns, action: Dispatch) {
   }
 }
 
+
+
 export default function CountryTable() {
   const { data } = useCountries();
   const countriesRaw = data as Demographics[] | undefined;
 
   const [columnSort, dispatch] = useReducer(reducer, initialState);
 
-  if (!countriesRaw) return null;
+  const sortedCountries = useMemo(()=>{
+    if (!countriesRaw) return [];
 
-  const countries = [...countriesRaw]
+    const cloned = [...countriesRaw];
+    const col = columnSort.column as keyof Demographics;
+    const dir = columnSort.scend;
 
-  //Table starts organised by name
-  if (columnSort.column === "name" && columnSort.scend === "Ascend") {
-    countries.sort((a, b) =>
-      a.name.localeCompare(b.name, undefined, {
-        sensitivity: "base",
-      })
-    );
-  }
+
+    cloned.sort((a, b) => {
+      const valA = a[col].toString();
+      const valB = b[col].toString();
+      return dir === "Ascend" ? valA.localeCompare(valB, undefined, {sensitivity: "base"}) : valB.localeCompare(valA, undefined, {sensitivity: "base"})
+    });
+    return cloned
+  }, [countriesRaw, columnSort]);
+
+ 
+
+  
+  
 
   function handleColumnSort(column: keyof Demographics, key: string) {
-    if (!countries) return;
+    
     if (columnSort.column === column && columnSort.scend === "Ascend") {
       dispatch({ type: `${key} descend` });
-      countries.sort((a, b) =>
-        b[column].toString().localeCompare(a[column].toString(), undefined, {
-          sensitivity: "base",
-        })
-      );
+    
     } else {
       dispatch({ type: `${key} ascend` });
-      countries.sort((a, b) =>
-        a[column].toString().localeCompare(b[column].toString(), undefined, {
-          sensitivity: "base",
-        })
-      );
     }
   }
 
@@ -126,7 +127,7 @@ export default function CountryTable() {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 *:odd:bg-gray-200 ">
-          {countries.map((c) => (
+          {sortedCountries.map((c) => (
             <CountryTableRow
               country={c.name}
               key={c.code}
