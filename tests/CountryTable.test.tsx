@@ -1,5 +1,20 @@
-import { it, describe, expect } from "vitest";
+import React from "react";
+import { it, describe, expect, vi } from "vitest";
 import { sortCountries } from "@/lib/sortCountries";
+import CountryTable from "@/components/countrytable/CountryTable";
+import {render, screen} from "@testing-library/react"
+
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
+function renderWithClient(ui: React.ReactElement){
+  return render(
+    <QueryClientProvider client={queryClient}>
+      {ui}
+    </QueryClientProvider>
+  )
+}
 
 const mockCountries = [
     {
@@ -28,6 +43,12 @@ const mockCountries = [
     },
 ]
 
+vi.mock("@/hooks/useCountries", ()=> ({
+    useCountries: ()=>({
+        data: mockCountries
+    })
+}))
+
 describe("sortCountries", ()=>{
     it("sorts table by name ascending", ()=>{
         const result = sortCountries(mockCountries, {column: "name", scend: "ascend"});
@@ -38,4 +59,13 @@ describe("sortCountries", ()=>{
         const result = sortCountries(mockCountries, {column: "policyScore", scend: "descend"});
         expect(result[0].policyScore).toBe(6.8)
     });
+})
+
+describe("Countries table", ()=>{
+    it("renders the table with headers and rows", ()=>{
+        renderWithClient(<CountryTable/>);
+        expect(screen.getByText("Country")).toBeInTheDocument();
+        expect(screen.getByText("Shape")).toBeInTheDocument();
+        expect(screen.getAllByRole("row").length).toBeGreaterThan(1)
+    })
 })

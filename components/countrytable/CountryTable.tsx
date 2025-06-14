@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer, useMemo } from "react";
+import React, { useReducer, useMemo } from "react";
 import CountryTableRow from "./CountryTableRow";
 import { useCountries } from "@/hooks/useCountries";
 import { sortCountries } from "@/lib/sortCountries";
