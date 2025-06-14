@@ -24,7 +24,7 @@ export default function CountryPanelModal({
   return (
     <Dialog.Root open={open} modal={false}>
       <Dialog.Content
-        className="fixed bottom-4 right-4 w-80 bg-white p-4 rounded shadow-lg z-50 border border-gray-200"
+        className="fixed top-4 right-4 w-80 bg-white p-4 rounded shadow-lg z-50 border border-gray-200"
         
       >
         <Dialog.Title className="text-lg font-bold mb-2">

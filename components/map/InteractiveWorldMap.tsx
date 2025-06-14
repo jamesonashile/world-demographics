@@ -62,7 +62,7 @@ export default function InteractiveWorldMap({
   };
 
   return (
-    <div className="relative w-full max-w-full h-auto">
+    <div className="relative w-full max-w-full h-auto flex justify-center">
       <div className="absolute z-10 top-4 left-4 flex flex-col gap-2">
         <button
           onClick={handleZoomIn}
@@ -79,8 +79,8 @@ export default function InteractiveWorldMap({
       </div>
       <ComposableMap
         projection="geoEqualEarth"
-        projectionConfig={{ scale: 160 }}
-        className="w-full h-auto"
+        projectionConfig={{ scale: 180 }}
+        className="w-full h-[80vh]"
       >
         <ZoomableGroup zoom={zoom} onMoveEnd={handleMoveEnd} center={center}>
           <Geographies geography={geoUrl}>
@@ -116,18 +116,15 @@ export default function InteractiveWorldMap({
                       },
                     }}
                     onMouseEnter={() => {
-                      
                       const centroid = geoCentroid(geo);
 
                       if (centroid && centroid.length === 2) {
                         onCountryEnter?.(code, centroid as [number, number]);
                       }
                     }}
-                    onMouseLeave={()=>{
-                      
-                      onCountryLeave()
+                    onMouseLeave={() => {
+                      onCountryLeave();
                     }}
-                  
                   />
                 );
               })

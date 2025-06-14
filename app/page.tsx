@@ -6,6 +6,7 @@ import InteractiveWorldMap from "@/components/map/InteractiveWorldMap";
 import CountryPanelModal from "@/components/map/CountryPanelModal";
 import { useCountryStore } from "@/store/useCountryStore";
 import { useCountries } from "@/hooks/useCountries";
+import CountryTable from "@/components/countrytable/CountryTable";
 
 
 
@@ -37,6 +38,8 @@ export default function Home() {
         onCountryEnter={handleMouseEnter}
         onCountryLeave={handleMouseLeave}
       />
+
+      <CountryTable/>
       
       {activeCountry && (
         
