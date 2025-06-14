@@ -1,7 +1,7 @@
 import React from "react";
 import { it, describe, expect, vi } from "vitest";
 import { sortCountries } from "@/lib/sortCountries";
-import CountryTable from "@/components/countrytable/CountryTable";
+import CountryTable, {reducer} from "@/components/countrytable/CountryTable";
 import {render, screen} from "@testing-library/react"
 
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
@@ -68,4 +68,24 @@ describe("Countries table", ()=>{
         expect(screen.getByText("Shape")).toBeInTheDocument();
         expect(screen.getAllByRole("row").length).toBeGreaterThan(1)
     })
+})
+
+describe("CountryTable reducer", ()=>{
+    it("sets column to 'name' and scend to 'ascend' on 'country ascend'", ()=>{
+        const intialState = { column: "code" as const, scend: "descend" as const};
+        const action = {type: "country ascend" as const};
+
+        const result = reducer(intialState, action);
+
+        expect(result).toEqual({column: "name", scend: "ascend"})
+    });
+
+    it("sets column to 'policyScore' and scend to 'descend' on 'policy descend'", ()=>{
+        const intialState = { column: "code" as const, scend: "ascend" as const};
+        const action = {type: "policy descend" as const};
+
+        const result = reducer(intialState, action);
+
+        expect(result).toEqual({column: "policyScore", scend: "descend"})
+    });
 })

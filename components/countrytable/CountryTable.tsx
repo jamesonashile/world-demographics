@@ -42,7 +42,7 @@ type Dispatch = {
 
 const initialState: Initial = { column: "name", scend: "ascend" };
 
-function reducer(state: Initial, action: Dispatch): Initial {
+export function reducer(state: Initial, action: Dispatch): Initial {
   switch (action.type) {
     case "country ascend":
       return { column: "name", scend: "ascend" };
