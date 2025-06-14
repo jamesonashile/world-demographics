@@ -3,13 +3,22 @@
 import { useReducer, useMemo } from "react";
 import CountryTableRow from "./CountryTableRow";
 import { useCountries } from "@/hooks/useCountries";
+import { sortCountries } from "@/lib/sortCountries";
 
 type SortKey = "country" | "code" | "phase" | "shape" | "policy";
 
-type SortDirection = "Ascend" | "Descend";
+type SortDirection = "ascend" | "descend";
+
+type Demographics = {
+  name: string;
+  code: string;
+  dividendPhase: string;
+  demographicShape: string;
+  policyScore: number;
+};
 
 type Initial = {
-  column: string;
+  column: keyof Demographics;
   scend: SortDirection;
 };
 
@@ -29,38 +38,32 @@ type Dispatch = {
   type: SortAction;
 };
 
-type Demographics = {
-  name: string;
-  code: string;
-  dividendPhase: string;
-  demographicShape: string;
-  policyScore: number;
-};
 
-const initialState: Initial = { column: "name", scend: "Ascend" };
+
+const initialState: Initial = { column: "name", scend: "ascend" };
 
 function reducer(state: Initial, action: Dispatch): Initial {
   switch (action.type) {
     case "country ascend":
-      return { column: "name", scend: "Ascend" };
+      return { column: "name", scend: "ascend" };
     case "country descend":
-      return { column: "name", scend: "Descend" };
+      return { column: "name", scend: "descend" };
     case "code ascend":
-      return { column: "code", scend: "Ascend" };
+      return { column: "code", scend: "ascend" };
     case "code descend":
-      return { column: "code", scend: "Descend" };
+      return { column: "code", scend: "descend" };
     case "phase ascend":
-      return { column: "dividendPhase", scend: "Ascend" };
+      return { column: "dividendPhase", scend: "ascend" };
     case "phase descend":
-      return { column: "dividendPhase", scend: "Descend" };
+      return { column: "dividendPhase", scend: "descend" };
     case "shape ascend":
-      return { column: "demographicShape", scend: "Ascend" };
+      return { column: "demographicShape", scend: "ascend" };
     case "shape descend":
-      return { column: "demographicShape", scend: "Descend" };
+      return { column: "demographicShape", scend: "descend" };
     case "policy ascend":
-      return { column: "policyScore", scend: "Ascend" };
+      return { column: "policyScore", scend: "ascend" };
     case "policy descend":
-      return { column: "policyScore", scend: "Descend" };
+      return { column: "policyScore", scend: "descend" };
     default:
       throw new Error(`Unknown action: ${state} ${action.type}`);
   }
@@ -77,17 +80,8 @@ export default function CountryTable() {
   const sortedCountries = useMemo(()=>{
     if (!countriesRaw) return [];
 
-    const cloned = [...countriesRaw];
-    const col = columnSort.column as keyof Demographics;
-    const dir = columnSort.scend;
-
-
-    cloned.sort((a, b) => {
-      const valA = a[col].toString();
-      const valB = b[col].toString();
-      return dir === "Ascend" ? valA.localeCompare(valB, undefined, {sensitivity: "base"}) : valB.localeCompare(valA, undefined, {sensitivity: "base"})
-    });
-    return cloned
+   return sortCountries(countriesRaw, columnSort)
+    
   }, [countriesRaw, columnSort]);
 
  
@@ -96,7 +90,7 @@ export default function CountryTable() {
   
 
   function handleColumnSort(column: keyof Demographics, key: SortKey) {
-    if (columnSort.column === column && columnSort.scend === "Ascend") {
+    if (columnSort.column === column && columnSort.scend === "ascend") {
       dispatch({ type: `${key} descend` });
     } else {
       dispatch({ type: `${key} ascend` });
