@@ -28,9 +28,14 @@ const mockCountries = [
     },
 ]
 
-describe("CountryTable", ()=>{
-    it("alphanumberically sorts table based on selected column direction", ()=>{
+describe("sortCountries", ()=>{
+    it("sorts table by name ascending", ()=>{
         const result = sortCountries(mockCountries, {column: "name", scend: "ascend"});
         expect(result[0].name).toBe("Australia")
-    })
+    });
+
+    it("sorts table by policy score descending", ()=>{
+        const result = sortCountries(mockCountries, {column: "policyScore", scend: "descend"});
+        expect(result[0].policyScore).toBe(6.8)
+    });
 })
