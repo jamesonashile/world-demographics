@@ -5,6 +5,7 @@ import React from "react";
 import { phaseColours } from "@/lib/phaseColours";
 import { useCountries } from "@/hooks/useCountries";
 import { useState } from "react";
+import { useHoverStore } from "@/store/useHoverStore";
 
 import {
   ComposableMap,
@@ -37,6 +38,8 @@ export default function InteractiveWorldMap({
   const [center, setCenter] = useState<[number, number]>([0, 0]);
 
   const { data: countries } = useCountries();
+
+const hoverCountryCode = useHoverStore((state)=> state.hoverCountryCode);
 
   if (!countries) return null;
 
@@ -87,10 +90,9 @@ export default function InteractiveWorldMap({
             {({ geographies }: { geographies: Feature[] }) =>
               geographies.map((geo: Feature) => {
                 const code = geo.properties?.["ISO3166-1-Alpha-2"];
-                //console.log("Checking match for geo code:", code, "against countries:", countries.map(c => c.code));
 
                 const match = countries.find((c) => c.code === code);
-                //console.log("MATCHING", code, match)
+                
                 const phase = match?.dividendPhase;
                 const fill = phase
                   ? phaseColours[phase] ?? "#e5e7eb"
@@ -107,7 +109,7 @@ export default function InteractiveWorldMap({
                     geography={geo}
                     style={{
                       default: {
-                        fill,
+                        fill: hoverCountryCode === geo.properties["ISO3166-1-Alpha-2"] ? "#9ca3af" : fill,
                         outline: "none",
                       },
                       hover: {

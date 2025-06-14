@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useHoverStore } from "@/store/useHoverStore";
 
 type Props = {
   country: string;
@@ -11,8 +12,12 @@ type Props = {
 };
 
 export default function CountryTableRow({ country, code, phase, shape, score }: Props) {
+
+const setHoverCountryCode = useHoverStore((state)=> state.setHoverCountryCode);
+
+
   return (
-      <tr className="hover:bg-blue-200 transition-colors">
+      <tr className="hover:bg-blue-200 transition-colors" onMouseEnter={()=>setHoverCountryCode(code)} onMouseLeave={()=>setHoverCountryCode(null)}>
         <td className="px-3 py-2 whitespace-nowrap text-gray-500">{country}</td>
         <td className="px-3 py-2 whitespace-nowrap text-gray-500">{code}</td>
         <td className="px-3 py-2 whitespace-nowrap text-gray-500">{phase}</td>
