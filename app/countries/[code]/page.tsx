@@ -5,7 +5,10 @@ import { useMemo } from "react";
 
 import InteractiveWorldMap from "@/components/map/InteractiveWorldMap";
 import DemographicsChart from "@/components/demographicschart/DemographicsChart";
+import NewsFeed from "@/components/newsfeed/NewsFeed";
+
 import { usePopulationData } from "@/hooks/usePopulationData";
+import { useCountryNews } from "@/store/useCountryNews";
 import { ageBins } from "@/lib/ageBins";
 
 type Params = {
@@ -46,7 +49,10 @@ export default function CountryPage({ params }: Params) {
     });
   }, [rawData]).sort((a,b)=> ageBins.indexOf(a.age_group) - ageBins.indexOf(b.age_group));
 
+  const {data: newsArticles} = useCountryNews(upperCode)
+
   return (
+    <>
     <div className="flex w-full max-w-[90vw]">
         <div className="flex-1">
 
@@ -56,8 +62,9 @@ export default function CountryPage({ params }: Params) {
         <DemographicsChart data={transformedData} />
 
         </div>
-      
-      
     </div>
+    {newsArticles && <NewsFeed articles={newsArticles} />}
+    
+    </>
   );
 }
