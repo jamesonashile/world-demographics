@@ -72,7 +72,7 @@ export default function CountryMap({
         const mapWidth = dimensions.width;
         const mapHeight = dimensions.height;
 
-        //console.log(mapHeight)
+  
 
         const scaleX = mapWidth / featureWidth;
         const scaleY = mapHeight / featureHeight;
@@ -88,9 +88,6 @@ export default function CountryMap({
         };
 
        
-
-        //setZoom(countryZoom);
-       //setCenter([centerX, centerY]);
 
         const code = geo.properties?.["ISO3166-1-Alpha-2"];
 

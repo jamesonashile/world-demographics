@@ -93,7 +93,7 @@ export default function InteractiveWorldMap({ code }: Code) {
   return (
     <div
       ref={mapRef}
-      className={`relative w-full ${!code ? 'h-[65vh]' : 'h-[35vh]'} flex justify-start`}
+      className={`relative max-w-${!code ? 'full' : '[34vw]'} ${!code ? 'h-[65vh]' : 'h-[35vh]'} flex justify-start`}
     >
       <div className="absolute z-10 top-4 left-4 flex flex-col gap-2">
         <button
