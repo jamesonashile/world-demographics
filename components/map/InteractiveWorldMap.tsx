@@ -38,7 +38,7 @@ export default function InteractiveWorldMap({ code }: Code) {
     const timer = setTimeout(() => {
       if (mapRef.current) {
         const { offsetWidth, offsetHeight } = mapRef.current;
-        console.log(offsetWidth);
+
         setDimensions({ width: offsetWidth, height: offsetHeight });
       }
     }, 250);
@@ -61,39 +61,33 @@ export default function InteractiveWorldMap({ code }: Code) {
     setActiveCountry(null);
   }
 
-  
-
-  function countryZoom(controlledZoom: number){
-    console.log(controlledZoom)
-     return setControlledZoom(()=>controlledZoom)
+  function countryZoom(controlledZoom: number) {
+    return setControlledZoom(() => controlledZoom);
   }
 
-  function handleZoomIn(){
-    console.log(controlledZoom)
+  function handleZoomIn() {
     return setControlledZoom((z) => Math.min(z * 1.5, 50));
   }
   function handleZoomOut() {
-    console.log(controlledZoom)
     return setControlledZoom((z) => Math.max(z / 1.5, 1.2));
   }
 
-
-
   function handleMoveEnd({ coordinates, zoom }: CoordinateZoom) {
-   
     const [lng, lat] = coordinates;
 
-   setControlledCenter([lng, lat]);
-   setControlledZoom(zoom);
- 
+    setControlledCenter([lng, lat]);
+    setControlledZoom(zoom);
   }
 
+  
   
 
   return (
     <div
       ref={mapRef}
-      className={`relative max-w-${!code ? 'full' : '[34vw]'} ${!code ? 'h-[65vh]' : 'h-[35vh]'} flex justify-start`}
+      className={`relative max-w-${!code ? "full" : "[34vw]"} ${
+        !code ? "h-[65vh]" : "h-[35vh]"
+      } flex justify-start`}
     >
       <div className="absolute z-10 top-4 left-4 flex flex-col gap-2">
         <button
@@ -109,10 +103,14 @@ export default function InteractiveWorldMap({ code }: Code) {
           -
         </button>
       </div>
+      {process.env.NODE_ENV === "test" && (
+        <div data-testid="zoom-value">{controlledZoom}</div>
+      )}
+
       <ComposableMap
         projection="geoEqualEarth"
         projectionConfig={{ scale: 180 }}
-        className={`${!code? 'w-full' : 'w-[50vw]'} h-full`}
+        className={`${!code ? "w-full" : "w-[50vw]"} h-full`}
       >
         <ZoomableGroup
           zoom={controlledZoom}

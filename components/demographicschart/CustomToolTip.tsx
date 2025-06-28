@@ -1,4 +1,5 @@
 import { TooltipProps } from 'recharts';
+import React from "react";
 
 type CustomTooltipProps = TooltipProps<number, string>;
 

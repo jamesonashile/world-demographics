@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 import { Geographies, Geography } from "react-simple-maps";
 
 import type { Feature } from "geojson";
@@ -49,6 +51,8 @@ export default function CountryMap({
   if (!countries) return null;
 
   return (
+    <>
+    
     <Geographies geography={geoUrl}>
       {({ geographies }: { geographies: Feature[] }) => {
         const geo = geographies.find(
@@ -102,6 +106,7 @@ export default function CountryMap({
           <Geography
             key={geo.properties["ISO3166-1-Alpha-2"] || geo.properties?.name}
             geography={geo}
+            
             style={{
               default: {
                 fill,
@@ -116,5 +121,9 @@ export default function CountryMap({
         );
       }}
     </Geographies>
+    <div data-testid="country-map"></div>
+    </>
+
+    
   );
 }

@@ -16,6 +16,8 @@ import { phaseColours } from "@/lib/phaseColours";
 
 import { useRouter } from "next/navigation";
 
+import React from "react";
+
 type Props = {
   onCountryEnter: (countryCode: string, centroid: [number, number]) => void;
   onCountryLeave: () => void;
@@ -31,6 +33,8 @@ export default function WorldMap({ onCountryEnter, onCountryLeave }: Props) {
   if (!countries) return null;
 
   return (
+   <>
+   
     <Geographies geography={geoUrl}>
       {({ geographies }: { geographies: Feature[] }) =>
         geographies.map((geo: Feature) => {
@@ -44,9 +48,11 @@ export default function WorldMap({ onCountryEnter, onCountryLeave }: Props) {
           if (!geo.properties) return null;
 
           return (
+            
             <Geography
               key={geo.properties["ISO3166-1-Alpha-2"] || geo.properties?.name}
               geography={geo}
+              
               onClick={() => {
                 const routeCode = geo.properties!["ISO3166-1-Alpha-2"];
                 if (routeCode) {
@@ -83,5 +89,9 @@ export default function WorldMap({ onCountryEnter, onCountryLeave }: Props) {
         })
       }
     </Geographies>
+    <div data-testid="world-map"></div>
+   </>
+
+   
   );
 }
